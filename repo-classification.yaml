@@ -1,0 +1,48 @@
+# Repository Classification for CassillyCapital / PES Global Group
+# This file defines which repos should be PUBLIC vs PRIVATE
+# Used by automation and Cursor/Comet for guardrails
+
+enterprise: CassillyCapital
+organizations:
+  - name: PESConnect
+    status: staging
+    repos:
+      # PRIVATE - High Sensitivity
+      - name: pes-odoo-erp-infrastructure
+        visibility: private
+        sensitivity: high
+        notes: "Infra, credentials, deployment"
+      - name: pes-odoo-enterprise-deployment
+        visibility: private
+        sensitivity: high
+      - name: M365-Email-Audit
+        visibility: private
+        sensitivity: high
+      - name: microsoft-founders-hub-escalation
+        visibility: private
+        sensitivity: high
+      - name: pes-partner-platform
+        visibility: private
+        sensitivity: high
+      - name: dtm-campaign-solar-q1-2026
+        visibility: private
+        sensitivity: medium
+
+      # PUBLIC - Low Sensitivity (safe to open-source)
+      - name: n8n-workflows
+        visibility: public
+        sensitivity: low
+        notes: "Generic automation templates"
+      - name: pes-programmatic-seo
+        visibility: public
+        sensitivity: low
+      - name: pes-global-infrastructure
+        visibility: public
+        sensitivity: medium
+        notes: "After secrets stripped"
+      - name: pes-docs
+        visibility: public
+        sensitivity: low
+      - name: .github
+        visibility: public
+        sensitivity: low
