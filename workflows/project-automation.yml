@@ -1,0 +1,74 @@
+# PES Global Project Management Automation
+# Automatically adds issues to organization projects and enforces standards
+
+name: Project Management Automation
+
+on:
+  issues:
+    types: [opened, labeled]
+  pull_request:
+    types: [opened, labeled, ready_for_review]
+
+env:
+  # Organization project numbers (find in project URL)
+  ERP_PROJECT: 4
+  BSDYNO_PROJECT: 2
+  MIGRATION_PROJECT: 3
+
+jobs:
+  add-to-project:
+    name: Add to Organization Project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add issue to ERP Project
+        if: contains(github.event.issue.labels.*.name, 'erp') || contains(github.event.issue.labels.*.name, 'odoo')
+        uses: actions/add-to-project@v1.0.1
+        with:
+          project-url: https://github.com/orgs/PESConnect/projects/4
+          github-token: ${{ secrets.PROJECT_TOKEN }}
+
+      - name: Add issue to BSDYNO Project
+        if: contains(github.event.issue.labels.*.name, 'bsdyno') || contains(github.event.issue.labels.*.name, 'infrastructure')
+        uses: actions/add-to-project@v1.0.1
+        with:
+          project-url: https://github.com/orgs/PESConnect/projects/2
+          github-token: ${{ secrets.PROJECT_TOKEN }}
+
+      - name: Add PR to relevant project
+        if: github.event_name == 'pull_request'
+        uses: actions/add-to-project@v1.0.1
+        with:
+          project-url: https://github.com/orgs/PESConnect/projects/4
+          github-token: ${{ secrets.PROJECT_TOKEN }}
+
+  validate-pr:
+    name: Validate PR Standards
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Check PR body has required sections
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.pull_request.body || '';
+            const requiredSections = [
+              'Summary',
+              'Type of change',
+              'Testing',
+              'Checklist'
+            ];
+            
+            const missingSections = requiredSections.filter(section => 
+              !body.toLowerCase().includes(section.toLowerCase())
+            );
+            
+            if (missingSections.length > 0) {
+              core.warning(`PR is missing sections: ${missingSections.join(', ')}`);
+              // Add comment to PR
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: `## PR Template Reminder\n\nPlease ensure your PR includes these sections:\n${missingSections.map(s => `- [ ] ${s}`).join('\n')}\n\nSee [CONTRIBUTING.md](https://github.com/PESConnect/.github/blob/main/CONTRIBUTING.md) for guidelines.`
+              });
+            }
