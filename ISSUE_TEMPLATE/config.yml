@@ -1,0 +1,21 @@
+# Issue Template Configuration for PES Global
+# This file configures the issue template chooser
+
+blank_issues_enabled: false
+
+contact_links:
+  - name: ERP Project Board
+    url: https://github.com/orgs/PESConnect/projects/4
+    about: View the ERP implementation roadmap and sprint board
+  - name: BSDYNO Infrastructure
+    url: https://github.com/orgs/PESConnect/projects/2
+    about: View infrastructure and server management tasks
+  - name: Odoo Migration Tracker
+    url: https://github.com/orgs/PESConnect/projects/3
+    about: Track Odoo 19 migration progress
+  - name: Contributing Guidelines
+    url: https://github.com/PESConnect/.github/blob/main/CONTRIBUTING.md
+    about: Read our contribution guidelines before submitting
+  - name: Security Policy
+    url: https://github.com/PESConnect/.github/blob/main/SECURITY.md
+    about: Report security vulnerabilities privately
