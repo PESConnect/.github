@@ -20,3 +20,9 @@ Brief description of the changes.
 - [ ] Linked to Notion / task
 - [ ] Updated docs if needed
 - [ ] No secrets committed
+
+## Project Management
+- [ ] Linked to GitHub Issue (Closes #___)
+- [ ] Issue is assigned to a GitHub Project
+- [ ] Issue has Start Date and Target Date set
+- [ ] Branch follows naming convention (feat/, fix/, cursor/)
